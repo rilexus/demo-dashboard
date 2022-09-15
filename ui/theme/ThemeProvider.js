@@ -30,7 +30,6 @@ const reconcile = (defaultTheme, customTheme) => {
       return {
         [key]: value({
           theme: defaultTheme,
-          get: (path) => access(path, defaultTheme),
         }),
         ...acc,
       };
@@ -59,4 +58,5 @@ const ThemeProvider = ({ theme, children }) => {
   );
 };
 
+export { access };
 export default ThemeProvider;
