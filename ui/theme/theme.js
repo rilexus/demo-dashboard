@@ -7,6 +7,8 @@ const theme = {
     1: `linear-gradient(0deg, ${themeColors.green[2]} 0%, ${themeColors.green[3]} 100%);`,
     2: `linear-gradient(0deg, ${themeColors.green[5]} 0%, ${themeColors.green[6]} 100%);`,
     3: `linear-gradient(0deg, ${themeColors.green[8]} 0%, ${themeColors.green[7]} 100%);`,
+    //
+    4: `linear-gradient(0deg, ${themeColors.yellow[1]} 0%, ${themeColors.yellow[2]} 100%);`,
   },
 };
 

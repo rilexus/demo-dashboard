@@ -1,10 +1,10 @@
-import styled, { css } from "styled-components";
+import styled, { css, useTheme } from "styled-components";
 import { BarChart, BG, InputLarge, Title } from "../ui";
 import { p35, p5, roundedLg, roundedXl } from "../ui/css";
 import { Button, ConfirmButton, MenuButton } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
 import Grid from "../ui/Grid/Grid";
-import { colors } from "../ui/theme/theme";
+import { colors, gradients } from "../ui/theme/theme";
 import { useCallback, useMemo } from "react";
 
 const Tile = styled(BG)`
@@ -34,16 +34,6 @@ const Header = () => {
       <Select />
       <InputLarge placeholder={"Search"} />
     </div>
-  );
-};
-
-const Visitors = () => {
-  return (
-    <Tile>
-      <Tile.Head>
-        <Title>Visitors</Title>
-      </Tile.Head>
-    </Tile>
   );
 };
 
@@ -85,6 +75,38 @@ const Tooltip = ({ value }) => {
         </span>
       </div>
     </StyledTooltip>
+  );
+};
+
+const Visitors = () => {
+  const tooltip = useCallback(({ key, value }) => {
+    return <Tooltip value={value} />;
+  }, []);
+
+  const theme = useTheme();
+
+  return (
+    <Tile>
+      <Tile.Head>
+        <Title>Visitors</Title>
+      </Tile.Head>
+      <div>
+        <BarChart
+          renderTooltip={tooltip}
+          onMouseLeave={(e) => {
+            // console.log(e);
+          }}
+          onMouseEnter={(e) => {
+            // console.log(e);
+          }}
+          background={() => gradients("4")({ theme })}
+          height={({ key, value }) => {
+            return value / 100;
+          }}
+          data={data}
+        />
+      </div>
+    </Tile>
   );
 };
 

@@ -19,6 +19,11 @@ const colors = {
   black: {
     1: "black",
   },
+  yellow: {
+    1: "rgb(226,118, 110)",
+    2: "rgb(235,200, 130)",
+    3: "",
+  },
 };
 
 export default colors;

@@ -28,7 +28,7 @@ const BarInner = styled.div`
   }
 `;
 
-const Bar = ({ id, flexGrow, onMouseEnter, onMouseLeave }) => {
+const Bar = ({ id, flexGrow, onMouseEnter, onMouseLeave, background }) => {
   return (
     <BarWrapper>
       <BarInner
@@ -36,6 +36,7 @@ const Bar = ({ id, flexGrow, onMouseEnter, onMouseLeave }) => {
         onMouseLeave={onMouseLeave}
         onMouseEnter={onMouseEnter}
         style={{
+          background,
           flexGrow,
         }}
       />
@@ -56,6 +57,7 @@ const BarChart = ({
   onMouseEnter,
   onMouseLeave,
   height,
+  background,
   renderTooltip,
 }) => {
   return (
@@ -74,6 +76,7 @@ const BarChart = ({
                 onMouseLeave={() => {
                   onMouseLeave?.({ key, value });
                 }}
+                background={background?.({ key, value })}
                 flexGrow={height?.({ key, value })}
                 onMouseEnter={(e) => onMouseEnter?.({ key, value })}
               />
