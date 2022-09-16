@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import { colors, gradients } from "../theme/theme";
 import Flex from "../Flex/Flex";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { rounded } from "../css";
+import { useStyle } from "../hooks";
+import Tooltip from "../Tooltip/Tooltip";
 
 const BarWrapper = styled.div`
-  width: 1.4rem;
+  width: 100%;
   min-height: 8rem;
   height: 100%;
   ${rounded};
@@ -26,10 +28,11 @@ const BarInner = styled.div`
   }
 `;
 
-const Bar = ({ flexGrow, onMouseEnter, onMouseLeave }) => {
+const Bar = ({ id, flexGrow, onMouseEnter, onMouseLeave }) => {
   return (
     <BarWrapper>
       <BarInner
+        id={id}
         onMouseLeave={onMouseLeave}
         onMouseEnter={onMouseEnter}
         style={{
@@ -40,31 +43,41 @@ const Bar = ({ flexGrow, onMouseEnter, onMouseLeave }) => {
   );
 };
 
-const Tooltip = styled.div`
-  position: absolute;
-  top: 30%;
-  background-color: white;
+const FlexWidth = styled.div`
+  margin-right: 0.5rem;
+  flex: 1;
+  &:last-child {
+    margin-right: 0;
+  }
 `;
 
-const BarChart = ({ data, onMouseEnter, onMouseLeave, height }) => {
+const BarChart = ({
+  data,
+  onMouseEnter,
+  onMouseLeave,
+  height,
+  renderTooltip,
+}) => {
   return (
     <div
       style={{
         position: "relative",
       }}
     >
-      <div></div>
-      <Flex>
+      <Flex justify={"space-around"}>
         {Object.entries(data).map(([key, value]) => {
           return (
-            <Bar
-              key={key}
-              onMouseLeave={() => {
-                onMouseLeave?.({ key, value });
-              }}
-              flexGrow={height?.({ key, value })}
-              onMouseEnter={(e) => onMouseEnter?.({ key, value })}
-            />
+            <FlexWidth key={key}>
+              <Tooltip htmlFor={key}>{renderTooltip({ key, value })}</Tooltip>
+              <Bar
+                id={key}
+                onMouseLeave={() => {
+                  onMouseLeave?.({ key, value });
+                }}
+                flexGrow={height?.({ key, value })}
+                onMouseEnter={(e) => onMouseEnter?.({ key, value })}
+              />
+            </FlexWidth>
           );
         })}
       </Flex>

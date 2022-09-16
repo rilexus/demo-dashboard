@@ -1,3 +1,4 @@
+export { default as Tooltip } from "./Tooltip/Tooltip";
 export { default as BarChart } from "./BarChart/BarChart";
 export { default as InputLarge } from "./inputs/InputLarge/InputLarge";
 export { Title } from "./typography/typography";
