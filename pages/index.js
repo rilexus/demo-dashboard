@@ -1,28 +1,13 @@
 import styled, { css, useTheme } from "styled-components";
-import { BarChart, BG, InputLarge, Title } from "../ui";
+import { BarChart, BG, InputLarge, Tile, Title } from "../ui";
 import { p35, p5, roundedLg, roundedXl } from "../ui/css";
-import { Button, ConfirmButton, MenuButton } from "../ui/buttons";
+import { Button, ConfirmButton, KebabButton, MenuButton } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
 import Grid from "../ui/Grid/Grid";
 import { colors, gradients } from "../ui/theme/theme";
-import { useCallback, useMemo } from "react";
-
-const Tile = styled(BG)`
-  ${roundedXl};
-  ${p5};
-`;
-
-Tile.Head = ({ children }) => {
-  return (
-    <div
-      style={{
-        padding: ".5rem 0 1.1rem 0",
-      }}
-    >
-      {children}
-    </div>
-  );
-};
+import { Sales, Visitors } from "../_page/home/widgets";
+import { Body, Subtitle } from "../ui/typography";
+import { buttonSubtleHoverCss } from "../ui/buttons/Button/Button";
 
 const Select = () => {
   return <div>select</div>;
@@ -34,122 +19,6 @@ const Header = () => {
       <Select />
       <InputLarge placeholder={"Search"} />
     </div>
-  );
-};
-
-const StyledTooltip = styled.div`
-  ${p35};
-  ${roundedLg};
-  background-color: white;
-
-  box-shadow: 0px 2px 15px 5px rgba(0, 0, 0, 0.1);
-`;
-const DateText = styled.div`
-  color: ${colors("gray.3")};
-  font-size: 0.8rem;
-  font-weight: 400;
-  margin-bottom: 0.2rem;
-`;
-
-const Tooltip = ({ value }) => {
-  return (
-    <StyledTooltip>
-      <DateText>12:30 AM - 01:00 PM</DateText>
-      <div>
-        <span
-          style={{
-            fontWeight: 500,
-            fontSize: "1.5rem",
-            marginRight: ".2rem",
-          }}
-        >
-          {value}
-        </span>
-        <span
-          style={{
-            fontWeight: 500,
-            fontSize: ".8rem",
-          }}
-        >
-          Items
-        </span>
-      </div>
-    </StyledTooltip>
-  );
-};
-
-const Visitors = () => {
-  const tooltip = useCallback(({ key, value }) => {
-    return <Tooltip value={value} />;
-  }, []);
-
-  const theme = useTheme();
-
-  return (
-    <Tile>
-      <Tile.Head>
-        <Title>Visitors</Title>
-      </Tile.Head>
-      <div>
-        <BarChart
-          renderTooltip={tooltip}
-          onMouseLeave={(e) => {
-            // console.log(e);
-          }}
-          onMouseEnter={(e) => {
-            // console.log(e);
-          }}
-          background={() => gradients("4")({ theme })}
-          height={({ key, value }) => {
-            return value / 100;
-          }}
-          data={data}
-        />
-      </div>
-    </Tile>
-  );
-};
-
-const data = {
-  1: 80,
-  2: 10,
-  3: 40,
-  4: 30,
-  5: 40,
-  6: 50,
-  7: 10,
-  8: 40,
-  9: 30,
-  10: 10,
-  11: 50,
-};
-
-const Sales = () => {
-  const tooltip = useCallback(({ key, value }) => {
-    return <Tooltip value={value} />;
-  }, []);
-
-  return (
-    <Tile>
-      <Tile.Head>
-        <Title>Sales</Title>
-      </Tile.Head>
-      <div>
-        <BarChart
-          renderTooltip={tooltip}
-          onMouseLeave={(e) => {
-            // console.log(e);
-          }}
-          onMouseEnter={(e) => {
-            // console.log(e);
-          }}
-          height={({ key, value }) => {
-            return value / 100;
-          }}
-          data={data}
-        />
-      </div>
-    </Tile>
   );
 };
 
@@ -178,12 +47,32 @@ const InsightsTile = styled(Tile)`
   color: white;
 `;
 
+const GreedButton = styled(Button)`
+  background-color: ${colors("green.9")};
+  color: white;
+  width: 100%;
+  margin: 0;
+  ${buttonSubtleHoverCss};
+`;
 const Insights = () => {
   return (
     <InsightsTile>
       <Tile.Head>
-        <Title>Insights</Title>
+        <Flex justify={"space-between"}>
+          <Title>Insights</Title>
+          <KebabButton
+            style={{
+              color: "white",
+            }}
+          />
+        </Flex>
       </Tile.Head>
+      <Subtitle>More users return to your shop today.</Subtitle>
+      <Body>
+        You had 751 users yesterday. 51 came back today which means you had 10
+        .3% of your users returned to your site.
+      </Body>
+      <GreedButton>View More</GreedButton>
     </InsightsTile>
   );
 };

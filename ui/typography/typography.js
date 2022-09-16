@@ -10,3 +10,4 @@ const Title = styled.div`
 `;
 
 export { Title };
+export default Title;
