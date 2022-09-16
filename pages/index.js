@@ -9,6 +9,7 @@ import { Body, Subtitle } from "../ui/typography";
 import { buttonSubtleHoverCss } from "../ui/buttons/Button/Button";
 import { Dialog as UIDialog } from "../ui/Dialog";
 import { useState } from "react";
+import { Sidebar } from "../components";
 
 const Select = () => {
   return <div>select</div>;
@@ -60,10 +61,16 @@ const TileWhite = styled(Tile)`
   background-color: white;
 `;
 
-const D = styled(UIDialog)`
+const Dialog = styled(UIDialog)`
   &::backdrop {
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(0px);
+  }
+  &[data-open="true"] {
+    color: #e18728;
+  }
+  &[data-open="false"] {
+    color: #e18728;
   }
 `;
 const Insights = () => {
@@ -85,9 +92,9 @@ const Insights = () => {
         You had 751 users yesterday. 51 came back today which means you had 10
         .3% of your users returned to your site.
       </Body>
-      <D open={isOpen}>
+      <Dialog open={isOpen} onClick={() => setIsOpen(false)}>
         <TileWhite>some</TileWhite>
-      </D>
+      </Dialog>
       <GreedButton
         onClick={() => {
           setIsOpen(true);
@@ -115,42 +122,64 @@ const Orders = () => {
   );
 };
 
-export default function Home() {
+const Layout = ({ main, sidebar, header }) => {
   return (
     <div>
-      <Header></Header>
-      <Flex>
-        <ConfirmButton>Publish</ConfirmButton>
-        <Button>Add a widget</Button>
-        <MenuButton />
-      </Flex>
-      <Grid gutter={"1rem"}>
-        <Grid.Item sm={80}>
+      <div>{sidebar}</div>
+      <div
+        style={{
+          paddingLeft: "80px",
+          paddingRight: "50px",
+        }}
+      >
+        <div>{header}</div>
+        <div>{main}</div>
+      </div>
+    </div>
+  );
+};
+
+export default function Home() {
+  return (
+    <Layout
+      sidebar={<Sidebar />}
+      header={<Header />}
+      main={
+        <div>
+          <Flex>
+            <ConfirmButton>Publish</ConfirmButton>
+            <Button>Add a widget</Button>
+            <MenuButton />
+          </Flex>
           <Grid gutter={"1rem"}>
-            <Grid.Item sm={100}>
-              <Summary />
+            <Grid.Item sm={80}>
+              <Grid gutter={"1rem"}>
+                <Grid.Item sm={100}>
+                  <Summary />
+                </Grid.Item>
+                <Grid.Item sm={50}>
+                  <Sales />
+                </Grid.Item>
+                <Grid.Item sm={50}>
+                  <Visitors />
+                </Grid.Item>
+              </Grid>
+            </Grid.Item>
+            <Grid.Item sm={20}>
+              <Insights />
             </Grid.Item>
             <Grid.Item sm={50}>
-              <Sales />
+              <Activity />
             </Grid.Item>
             <Grid.Item sm={50}>
-              <Visitors />
+              <Orders />
             </Grid.Item>
           </Grid>
-        </Grid.Item>
-        <Grid.Item sm={20}>
-          <Insights />
-        </Grid.Item>
-        <Grid.Item sm={50}>
-          <Activity />
-        </Grid.Item>
-        <Grid.Item sm={50}>
-          <Orders />
-        </Grid.Item>
-      </Grid>
-      <Tile>
-        <Title>Customer's cart</Title>
-      </Tile>
-    </div>
+          <Tile>
+            <Title>Customer's cart</Title>
+          </Tile>
+        </div>
+      }
+    ></Layout>
   );
 }

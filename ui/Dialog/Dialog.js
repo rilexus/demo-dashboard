@@ -32,7 +32,12 @@ const Dialog = ({ open, children, onClick, ...props }) => {
   };
 
   return (
-    <StyledDialog ref={dialogRef} {...props} onClick={handleClick}>
+    <StyledDialog
+      data-open={open}
+      ref={dialogRef}
+      {...props}
+      onClick={handleClick}
+    >
       <div ref={childRef}>{children}</div>
     </StyledDialog>
   );
