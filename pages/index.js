@@ -88,6 +88,20 @@ const Tooltip = ({ value }) => {
   );
 };
 
+const data = {
+  1: 80,
+  2: 10,
+  3: 40,
+  4: 30,
+  5: 40,
+  6: 50,
+  7: 10,
+  8: 40,
+  9: 30,
+  10: 10,
+  11: 50,
+};
+
 const Sales = () => {
   const tooltip = useCallback(({ key, value }) => {
     return <Tooltip value={value} />;
@@ -110,19 +124,7 @@ const Sales = () => {
           height={({ key, value }) => {
             return value / 100;
           }}
-          data={{
-            1: 80,
-            2: 10,
-            3: 40,
-            4: 30,
-            5: 40,
-            6: 50,
-            7: 10,
-            8: 40,
-            9: 30,
-            10: 10,
-            11: 50,
-          }}
+          data={data}
         />
       </div>
     </Tile>

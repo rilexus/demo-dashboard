@@ -7,6 +7,7 @@ const Fixed = styled.div`
   position: fixed;
 `;
 
+// TODO: handle window corners overlap
 const Tooltip = ({ htmlFor, children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [{ x, y }, setPosition] = useState({ x: 0, y: 0 });
@@ -56,6 +57,7 @@ const Tooltip = ({ htmlFor, children }) => {
     {
       visibility: isVisible ? "inherit" : "hidden",
       pointerEvents: "none",
+      zIndex: 10000,
       left: `${x - width / 2}px`,
       top: `${y - height - 20}px`,
     },
