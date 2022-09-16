@@ -14,16 +14,11 @@ const Tooltip = ({ htmlFor, children }) => {
 
   const ref = useRef();
 
-  const timeoutRef = useRef(null);
-
   useEffect(() => {
     const element = document.getElementById(htmlFor);
 
     const handleEnter = () => {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsVisible(true);
-      }, 70);
+      setIsVisible(true);
     };
 
     const handleMove = (e) => {
@@ -33,7 +28,6 @@ const Tooltip = ({ htmlFor, children }) => {
 
     const handleLeave = () => {
       setIsVisible(false);
-      clearTimeout(timeoutRef.current);
     };
 
     if (element) {
