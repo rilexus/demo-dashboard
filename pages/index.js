@@ -1,13 +1,14 @@
-import styled, { css, useTheme } from "styled-components";
-import { BarChart, BG, InputLarge, Tile, Title } from "../ui";
-import { p35, p5, roundedLg, roundedXl } from "../ui/css";
+import styled, { css } from "styled-components";
+import { InputLarge, Tile, Title } from "../ui";
 import { Button, ConfirmButton, KebabButton, MenuButton } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
 import Grid from "../ui/Grid/Grid";
-import { colors, gradients } from "../ui/theme/theme";
+import { colors } from "../ui/theme/theme";
 import { Sales, Visitors } from "../_page/home/widgets";
 import { Body, Subtitle } from "../ui/typography";
 import { buttonSubtleHoverCss } from "../ui/buttons/Button/Button";
+import { Dialog as UIDialog } from "../ui/Dialog";
+import { useState } from "react";
 
 const Select = () => {
   return <div>select</div>;
@@ -54,7 +55,19 @@ const GreedButton = styled(Button)`
   margin: 0;
   ${buttonSubtleHoverCss};
 `;
+
+const TileWhite = styled(Tile)`
+  background-color: white;
+`;
+
+const D = styled(UIDialog)`
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0px);
+  }
+`;
 const Insights = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <InsightsTile>
       <Tile.Head>
@@ -72,7 +85,16 @@ const Insights = () => {
         You had 751 users yesterday. 51 came back today which means you had 10
         .3% of your users returned to your site.
       </Body>
-      <GreedButton>View More</GreedButton>
+      <D open={isOpen}>
+        <TileWhite>some</TileWhite>
+      </D>
+      <GreedButton
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      >
+        View More
+      </GreedButton>
     </InsightsTile>
   );
 };
