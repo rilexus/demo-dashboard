@@ -88,17 +88,17 @@ const FlexWidth = styled.div`
 `;
 
 const data = {
-  1: 200,
-  2: 100,
-  3: 400,
-  4: 50,
-  5: 100,
-  6: 300,
-  7: 200,
-  8: 190,
-  9: 230,
-  10: 199,
-  11: 400,
+  visitor1: 200,
+  visitor2: 100,
+  visitor3: 400,
+  visitor4: 50,
+  visitor5: 100,
+  visitor6: 300,
+  visitor7: 200,
+  visitor8: 190,
+  visitor9: 230,
+  visitor10: 199,
+  visitor11: 400,
 };
 
 const Visitors = () => {

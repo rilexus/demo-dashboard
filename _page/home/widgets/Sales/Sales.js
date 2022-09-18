@@ -6,8 +6,8 @@ import { p35, rounded, roundedLg } from "../../../../ui/css";
 import { colors, gradients } from "../../../../ui/theme/theme";
 import { Tile, Title } from "../../../../ui";
 import XAchse from "../components";
-import { ButtonStyleless, KebabButton } from "../../../../ui/buttons";
-import { KebabHorizontalIcon } from "../../../../ui/icons";
+import { KebabButton } from "../../../../ui/buttons";
+import Container, { container } from "../../../../ui/utils/container/container";
 
 const BarWrapper = styled.div`
   width: 100%;
@@ -97,17 +97,17 @@ const Tip = ({ value }) => {
 };
 
 const data = {
-  1: 80,
-  2: 10,
-  3: 40,
-  4: 30,
-  5: 40,
-  6: 50,
-  7: 10,
-  8: 40,
-  9: 30,
-  10: 10,
-  11: 50,
+  sale1: 80,
+  sale2: 10,
+  sale3: 40,
+  sale4: 30,
+  sale5: 40,
+  sale6: 50,
+  sale7: 10,
+  sale8: 40,
+  sale9: 30,
+  sale10: 10,
+  sale11: 50,
 };
 
 const Sales = () => {
@@ -120,18 +120,22 @@ const Sales = () => {
         </Flex>
       </Tile.Head>
       <div
-        style={{
-          position: "relative",
-        }}
+        style={
+          {
+            // position: "relative",
+          }
+        }
       >
         <Flex justify={"space-around"}>
           {Object.entries(data).map(([key, value]) => {
             return (
               <FlexWidth key={`sales-${key}`}>
-                <Tooltip htmlFor={`sales-${key}`}>
-                  <Tip value={value} />
-                </Tooltip>
-                <Bar id={`sales-${key}`} flexGrow={value / 100} />
+                <div>
+                  <Tooltip htmlFor={`sales-${key}`}>
+                    <Tip value={value} />
+                  </Tooltip>
+                  <Bar id={`sales-${key}`} flexGrow={value / 100} />
+                </div>
               </FlexWidth>
             );
           })}

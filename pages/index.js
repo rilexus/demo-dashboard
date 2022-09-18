@@ -11,6 +11,9 @@ import { Dialog as UIDialog } from "../ui/Dialog";
 import { useState } from "react";
 import { Sidebar } from "../components";
 
+import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
 const Select = () => {
   return <div>select</div>;
 };
@@ -139,6 +142,79 @@ const Layout = ({ main, sidebar, header }) => {
   );
 };
 
+// const Child = styled.div`
+//   ${container("(min-width: 500px)")`
+//     background-color: red;
+//   `}
+// `;
+//
+const Widget = ({ children }) => {
+  const [{ isDragging }, ref] = useDrag(() => ({
+    type: ItemTypes.WIDGET,
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+  return (
+    <div
+      ref={ref}
+      className={"widget"}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const WidgetHolder = ({ children }) => {
+  const [{ isOver }, ref] = useDrop(
+    () => ({
+      accept: ItemTypes.WIDGET,
+      drop: () => {
+        console.log("drop happened!");
+      },
+      collect: (monitor) => ({
+        isOver: !!monitor.isOver(),
+      }),
+    }),
+    []
+  );
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        display: "inline-block",
+        marginRight: "10px",
+        width: "200px",
+        height: "200px",
+        backgroundColor: "gray",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
+
+const ItemTypes = {
+  WIDGET: "widget",
+};
+
+const S = () => {
+  return (
+    <Tile
+      style={{
+        width: "100px",
+        height: "100px",
+      }}
+    >
+      <Tile.Head>some</Tile.Head>
+    </Tile>
+  );
+};
+
 export default function Home() {
   return (
     <Layout
@@ -151,30 +227,42 @@ export default function Home() {
             <Button>Add a widget</Button>
             <MenuButton />
           </Flex>
-          <Grid gutter={"1rem"}>
-            <Grid.Item sm={80}>
-              <Grid gutter={"1rem"}>
-                <Grid.Item sm={100}>
-                  <Summary />
-                </Grid.Item>
-                <Grid.Item sm={50}>
-                  <Sales />
-                </Grid.Item>
-                <Grid.Item sm={50}>
-                  <Visitors />
-                </Grid.Item>
-              </Grid>
-            </Grid.Item>
-            <Grid.Item sm={20}>
-              <Insights />
-            </Grid.Item>
-            <Grid.Item sm={50}>
-              <Activity />
-            </Grid.Item>
-            <Grid.Item sm={50}>
-              <Orders />
-            </Grid.Item>
-          </Grid>
+          <DndProvider backend={HTML5Backend}>
+            <Grid gutter={"1rem"}>
+              <Grid.Item sm={80}>
+                <Grid gutter={"1rem"}>
+                  <Grid.Item sm={100}>
+                    <Widget>
+                      <Summary />
+                    </Widget>
+                  </Grid.Item>
+                  <Grid.Item sm={50}>
+                    <Widget>
+                      <Sales />
+                    </Widget>
+                  </Grid.Item>
+                  <Grid.Item sm={50}>
+                    <Widget>
+                      <Visitors />
+                    </Widget>
+                  </Grid.Item>
+                </Grid>
+              </Grid.Item>
+              <Grid.Item sm={20}>
+                <Widget>
+                  <Insights />
+                </Widget>
+              </Grid.Item>
+              <Grid.Item sm={50}>
+                <Widget>
+                  <Activity />
+                </Widget>
+              </Grid.Item>
+              <Grid.Item sm={50}>
+                <Orders />
+              </Grid.Item>
+            </Grid>
+          </DndProvider>
           <Tile>
             <Title>Customer's cart</Title>
           </Tile>

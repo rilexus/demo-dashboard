@@ -9,16 +9,24 @@ const Fixed = styled.div`
 
 // TODO: handle window corners overlap
 const Tooltip = ({ htmlFor, children }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isDisplayed, setIsDisplayed] = useState(false);
   const [{ x, y }, setPosition] = useState({ x: 0, y: 0 });
+
+  const [isVisible, setIsVisible] = useState(false);
 
   const ref = useRef();
 
   useEffect(() => {
     const element = document.getElementById(htmlFor);
+    let timeout = null;
 
-    const handleEnter = () => {
-      setIsVisible(true);
+    const handleEnter = (e) => {
+      setIsDisplayed(true);
+      const { clientX, clientY } = e;
+      setPosition({ x: clientX, y: clientY });
+      timeout = setTimeout(() => {
+        setIsVisible(true);
+      }, 200);
     };
 
     const handleMove = (e) => {
@@ -27,6 +35,7 @@ const Tooltip = ({ htmlFor, children }) => {
     };
 
     const handleLeave = () => {
+      setIsDisplayed(false);
       setIsVisible(false);
     };
 
@@ -36,6 +45,7 @@ const Tooltip = ({ htmlFor, children }) => {
       element.addEventListener("mouseleave", handleLeave);
     }
     return () => {
+      clearTimeout(timeout);
       if (element) {
         element.removeEventListener("mouseenter", handleEnter);
         element.removeEventListener("mousemove", handleMove);
@@ -49,13 +59,14 @@ const Tooltip = ({ htmlFor, children }) => {
 
   const style = useStyle(
     {
-      visibility: isVisible ? "inherit" : "hidden",
+      display: isDisplayed ? "inherit" : "none",
       pointerEvents: "none",
       zIndex: 10000,
       left: `${x - width / 2}px`,
       top: `${y - height - 20}px`,
+      visibility: isVisible ? "inherit" : "hidden",
     },
-    [width, height, x, y, isVisible]
+    [width, height, x, y, isDisplayed, isVisible]
   );
 
   return (
