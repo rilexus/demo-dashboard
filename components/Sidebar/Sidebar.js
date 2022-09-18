@@ -1,10 +1,14 @@
 import React from "react";
 import { PersonFilledIcon } from "../../ui/icons";
-import { Tile } from "../../ui";
-import styled from "styled-components";
-import { rounded2xl, roundedXl } from "../../ui/css";
 
-const BG = styled(Tile)`
+import styled from "styled-components";
+import { p5, rounded2xl } from "../../ui/css";
+
+import BG from "../../ui/BG/BG";
+const Tile = styled(BG)`
+  ${rounded2xl};
+  ${p5};
+
   padding: 0.85rem;
   margin-bottom: 1rem;
   display: flex;
@@ -14,7 +18,6 @@ const BG = styled(Tile)`
   width: 1.5rem;
   height: 1.5rem;
   color: gray;
-  ${rounded2xl};
 
   &:hover {
     color: black;
@@ -24,9 +27,9 @@ const BG = styled(Tile)`
 const PersonButton = () => {
   return (
     <div>
-      <BG>
+      <Tile>
         <PersonFilledIcon />
-      </BG>
+      </Tile>
     </div>
   );
 };

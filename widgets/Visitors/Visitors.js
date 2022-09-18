@@ -1,11 +1,13 @@
 import styled from "styled-components";
-import { ElevatedTile, Tile, Title } from "../../../../ui";
-import { colors, gradients } from "../../../../ui/theme/theme";
-import Flex from "../../../../ui/Flex/Flex";
-import Tooltip from "../../../../ui/Tooltip/Tooltip";
-import { rounded } from "../../../../ui/css";
-import XAchse from "../components";
-import { KebabButton } from "../../../../ui/buttons";
+import { colors, gradients } from "../../ui/theme/theme";
+import { ElevatedTile } from "../../ui";
+import { rounded } from "../../ui/css";
+import Tile from "../../ui/Tile/Tile";
+import Flex from "../../ui/Flex/Flex";
+import KebabButton from "../../ui/buttons/KebabButton/KebabButton";
+import { Title } from "../../ui/typography";
+import Tooltip from "../../ui/Tooltip/Tooltip";
+import XAchse from "../../_page/home/widgets/components";
 
 const DateText = styled.div`
   color: ${colors("gray.3")};
@@ -43,7 +45,7 @@ const Tip = ({ value }) => {
 
 const BarWrapper = styled.div`
   width: 100%;
-  min-height: 8rem;
+  min-height: 10rem;
   height: 100%;
   ${rounded};
   flex-direction: column-reverse;
@@ -82,6 +84,7 @@ const Bar = ({ id, flexGrow, onMouseEnter, onMouseLeave, background }) => {
 const FlexWidth = styled.div`
   margin-right: 0.5rem;
   flex: 1;
+  height: 100%;
   &:last-child {
     margin-right: 0;
   }
@@ -110,25 +113,34 @@ const Visitors = () => {
           <KebabButton />
         </Flex>
       </Tile.Head>
-      <div
-        style={{
-          position: "relative",
-        }}
-      >
-        <Flex justify={"space-around"}>
+      <Tile.Body>
+        <Flex
+          justify={"space-around"}
+          style={{
+            height: "100%",
+          }}
+        >
           {Object.entries(data).map(([key, value]) => {
             return (
               <FlexWidth key={`visitors-${key}`}>
-                <Tooltip htmlFor={`visitors-${key}`}>
-                  <Tip value={value} />
-                </Tooltip>
-                <Bar id={`visitors-${key}`} flexGrow={value / 500} />
+                <div
+                  style={{
+                    height: "100%",
+                  }}
+                >
+                  <Tooltip htmlFor={`visitors-${key}`}>
+                    <Tip value={value} />
+                  </Tooltip>
+                  <Bar id={`visitors-${key}`} flexGrow={value / 500} />
+                </div>
               </FlexWidth>
             );
           })}
         </Flex>
+      </Tile.Body>
+      <Tile.Footer>
         <XAchse />
-      </div>
+      </Tile.Footer>
     </Tile>
   );
 };

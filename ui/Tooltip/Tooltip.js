@@ -9,10 +9,18 @@ const Fixed = styled.div`
 
 // TODO: handle window corners overlap
 const Tooltip = ({ htmlFor, children }) => {
-  const [isDisplayed, setIsDisplayed] = useState(false);
-  const [{ x, y }, setPosition] = useState({ x: 0, y: 0 });
-
-  const [isVisible, setIsVisible] = useState(false);
+  const [
+    {
+      display,
+      visible,
+      position: { x, y },
+    },
+    setState,
+  ] = useState({
+    display: false,
+    visible: false,
+    position: { x: 0, y: 0 },
+  });
 
   const ref = useRef();
 
@@ -21,22 +29,30 @@ const Tooltip = ({ htmlFor, children }) => {
     let timeout = null;
 
     const handleEnter = (e) => {
-      setIsDisplayed(true);
       const { clientX, clientY } = e;
-      setPosition({ x: clientX, y: clientY });
+      setState((s) => ({
+        ...s,
+        display: true,
+        position: { x: clientX, y: clientY },
+      }));
+
       timeout = setTimeout(() => {
-        setIsVisible(true);
-      }, 200);
+        setState((s) => ({ ...s, visible: true }));
+      }, 60);
     };
 
     const handleMove = (e) => {
       const { clientX, clientY } = e;
-      setPosition({ x: clientX, y: clientY });
+      setState((s) => ({ ...s, position: { x: clientX, y: clientY } }));
     };
 
     const handleLeave = () => {
-      setIsDisplayed(false);
-      setIsVisible(false);
+      setState((s) => ({
+        ...s,
+        display: false,
+        visible: false,
+      }));
+      clearTimeout(timeout);
     };
 
     if (element) {
@@ -59,14 +75,14 @@ const Tooltip = ({ htmlFor, children }) => {
 
   const style = useStyle(
     {
-      display: isDisplayed ? "inherit" : "none",
+      display: display ? "inherit" : "none",
       pointerEvents: "none",
       zIndex: 10000,
       left: `${x - width / 2}px`,
       top: `${y - height - 20}px`,
-      visibility: isVisible ? "inherit" : "hidden",
+      visibility: visible ? "inherit" : "hidden",
     },
-    [width, height, x, y, isDisplayed, isVisible]
+    [width, height, display, visible, x, y]
   );
 
   return (

@@ -1,12 +1,13 @@
-import Flex from "../../../../ui/Flex/Flex";
-import Tooltip from "../../../../ui/Tooltip/Tooltip";
 import React from "react";
 import styled from "styled-components";
-import { p35, rounded, roundedLg } from "../../../../ui/css";
-import { colors, gradients } from "../../../../ui/theme/theme";
-import { Tile, Title } from "../../../../ui";
-import XAchse from "../components";
-import { KebabButton } from "../../../../ui/buttons";
+import { p35, rounded, roundedLg } from "../../ui/css";
+import { colors, gradients } from "../../ui/theme/theme";
+import Tile from "../../ui/Tile/Tile";
+import Flex from "../../ui/Flex/Flex";
+import { Title } from "../../ui/typography";
+import Tooltip from "../../ui/Tooltip/Tooltip";
+import XAchse from "../../_page/home/widgets/components";
+import KebabButton from "../../ui/buttons/KebabButton/KebabButton";
 
 const BarWrapper = styled.div`
   width: 100%;

@@ -1,18 +1,18 @@
 import styled, { css } from "styled-components";
 import { InputLarge, Tile, Title } from "../ui";
-import { Button, ConfirmButton, KebabButton, MenuButton } from "../ui/buttons";
+import { Button, ConfirmButton, MenuButton } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
-import Grid from "../ui/Grid/Grid";
 import { colors } from "../ui/theme/theme";
-import { Sales, Visitors } from "../_page/home/widgets";
-import { Body, Subtitle } from "../ui/typography";
-import { buttonSubtleHoverCss } from "../ui/buttons/Button/Button";
-import { Dialog as UIDialog } from "../ui/Dialog";
-import { useState } from "react";
-import { Sidebar } from "../components";
-
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { Grid, Sidebar, Widget } from "../components";
+import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { Insights } from "../widgets/Insights";
+import { Carts } from "../widgets/Carts";
+import { Orders } from "../widgets/Orders";
+import { Activity } from "../widgets/Activity";
+import { Visitors } from "../widgets/Visitors";
+import { Sales } from "../widgets/Sales";
 
 const Select = () => {
   return <div>select</div>;
@@ -33,95 +33,13 @@ const BlackTile = styled(Tile)`
   padding: 1.6rem;
 `;
 
-const greenGradient = css`
-  background: ${({ theme }) => {
-    return theme.gradients[1];
-  }};
-`;
-
 const Summary = () => {
   return (
     <BlackTile>
-      <Title>Summary</Title>
-    </BlackTile>
-  );
-};
-
-const InsightsTile = styled(Tile)`
-  ${greenGradient};
-  color: white;
-`;
-
-const GreedButton = styled(Button)`
-  background-color: ${colors("green.9")};
-  color: white;
-  width: 100%;
-  margin: 0;
-  ${buttonSubtleHoverCss};
-`;
-
-const TileWhite = styled(Tile)`
-  background-color: white;
-`;
-
-const Dialog = styled(UIDialog)`
-  &::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(0px);
-  }
-  &[data-open="true"] {
-    color: #e18728;
-  }
-  &[data-open="false"] {
-    color: #e18728;
-  }
-`;
-const Insights = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  return (
-    <InsightsTile>
       <Tile.Head>
-        <Flex justify={"space-between"}>
-          <Title>Insights</Title>
-          <KebabButton
-            style={{
-              color: "white",
-            }}
-          />
-        </Flex>
+        <Title>Summary</Title>
       </Tile.Head>
-      <Subtitle>More users return to your shop today.</Subtitle>
-      <Body>
-        You had 751 users yesterday. 51 came back today which means you had 10
-        .3% of your users returned to your site.
-      </Body>
-      <Dialog open={isOpen} onClick={() => setIsOpen(false)}>
-        <TileWhite>some</TileWhite>
-      </Dialog>
-      <GreedButton
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        View More
-      </GreedButton>
-    </InsightsTile>
-  );
-};
-
-const Activity = () => {
-  return (
-    <Tile>
-      <Title>Activity</Title>
-    </Tile>
-  );
-};
-
-const Orders = () => {
-  return (
-    <Tile>
-      <Title>Orders</Title>
-    </Tile>
+    </BlackTile>
   );
 };
 
@@ -148,25 +66,6 @@ const Layout = ({ main, sidebar, header }) => {
 //   `}
 // `;
 //
-const Widget = ({ children }) => {
-  const [{ isDragging }, ref] = useDrag(() => ({
-    type: ItemTypes.WIDGET,
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
-  return (
-    <div
-      ref={ref}
-      className={"widget"}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
 
 const WidgetHolder = ({ children }) => {
   const [{ isOver }, ref] = useDrop(
@@ -198,21 +97,52 @@ const WidgetHolder = ({ children }) => {
   );
 };
 
-const ItemTypes = {
-  WIDGET: "widget",
+const widgets = [
+  { name: "Summary", column: [1, 4], row: [1, 1] },
+  {
+    name: "Sales",
+    column: [1, 2],
+    row: [2, 3],
+  },
+  {
+    name: "Visitors",
+    column: [2, 4],
+    row: [2, 3],
+  },
+  {
+    name: "Insights",
+    column: [4, 5],
+    row: [1, 3],
+  },
+  {
+    name: "Activity",
+    column: [],
+    row: [],
+  },
+  {
+    name: "Orders",
+    column: [],
+    row: [],
+  },
+  {
+    name: "Carts",
+    column: [],
+    row: [],
+  },
+];
+
+const widgetMap = {
+  Summary,
+  Sales,
+  Visitors,
+  Activity,
+  Orders,
+  Insights,
+  Carts,
 };
 
-const S = () => {
-  return (
-    <Tile
-      style={{
-        width: "100px",
-        height: "100px",
-      }}
-    >
-      <Tile.Head>some</Tile.Head>
-    </Tile>
-  );
+const Dashboard = ({ children }) => {
+  return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };
 
 export default function Home() {
@@ -227,45 +157,20 @@ export default function Home() {
             <Button>Add a widget</Button>
             <MenuButton />
           </Flex>
-          <DndProvider backend={HTML5Backend}>
+          <Dashboard>
             <Grid gutter={"1rem"}>
-              <Grid.Item sm={80}>
-                <Grid gutter={"1rem"}>
-                  <Grid.Item sm={100}>
+              {widgets.map(({ name, column, row }) => {
+                const Component = widgetMap[name];
+                return (
+                  <Grid.Item column={column} row={row}>
                     <Widget>
-                      <Summary />
+                      <Component />
                     </Widget>
                   </Grid.Item>
-                  <Grid.Item sm={50}>
-                    <Widget>
-                      <Sales />
-                    </Widget>
-                  </Grid.Item>
-                  <Grid.Item sm={50}>
-                    <Widget>
-                      <Visitors />
-                    </Widget>
-                  </Grid.Item>
-                </Grid>
-              </Grid.Item>
-              <Grid.Item sm={20}>
-                <Widget>
-                  <Insights />
-                </Widget>
-              </Grid.Item>
-              <Grid.Item sm={50}>
-                <Widget>
-                  <Activity />
-                </Widget>
-              </Grid.Item>
-              <Grid.Item sm={50}>
-                <Orders />
-              </Grid.Item>
+                );
+              })}
             </Grid>
-          </DndProvider>
-          <Tile>
-            <Title>Customer's cart</Title>
-          </Tile>
+          </Dashboard>
         </div>
       }
     ></Layout>
