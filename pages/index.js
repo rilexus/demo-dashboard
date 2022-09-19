@@ -6,13 +6,7 @@ import { colors } from "../ui/theme/theme";
 import { Grid, Sidebar, Widget } from "../components";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-
-import { Insights } from "../widgets/Insights";
-import { Carts } from "../widgets/Carts";
-import { Orders } from "../widgets/Orders";
-import { Activity } from "../widgets/Activity";
-import { Visitors } from "../widgets/Visitors";
-import { Sales } from "../widgets/Sales";
+import { useWidgets } from "../core/widget/widget";
 
 const Select = () => {
   return <div>select</div>;
@@ -24,22 +18,6 @@ const Header = () => {
       <Select />
       <InputLarge placeholder={"Search"} />
     </div>
-  );
-};
-
-const BlackTile = styled(Tile)`
-  background-color: ${colors("black.1")};
-  color: white;
-  padding: 1.6rem;
-`;
-
-const Summary = () => {
-  return (
-    <BlackTile>
-      <Tile.Head>
-        <Title>Summary</Title>
-      </Tile.Head>
-    </BlackTile>
   );
 };
 
@@ -97,55 +75,12 @@ const WidgetHolder = ({ children }) => {
   );
 };
 
-const widgets = [
-  { name: "Summary", column: [1, 4], row: [1, 1] },
-  {
-    name: "Sales",
-    column: [1, 2],
-    row: [2, 3],
-  },
-  {
-    name: "Visitors",
-    column: [2, 4],
-    row: [2, 3],
-  },
-  {
-    name: "Insights",
-    column: [4, 5],
-    row: [1, 3],
-  },
-  {
-    name: "Activity",
-    column: [],
-    row: [],
-  },
-  {
-    name: "Orders",
-    column: [],
-    row: [],
-  },
-  {
-    name: "Carts",
-    column: [],
-    row: [],
-  },
-];
-
-const widgetMap = {
-  Summary,
-  Sales,
-  Visitors,
-  Activity,
-  Orders,
-  Insights,
-  Carts,
-};
-
 const Dashboard = ({ children }) => {
   return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };
-
 export default function Home() {
+  const [w] = useWidgets();
+
   return (
     <Layout
       sidebar={<Sidebar />}
@@ -159,14 +94,11 @@ export default function Home() {
           </Flex>
           <Dashboard>
             <Grid gutter={"1rem"}>
-              {widgets.map(({ name, column, row }) => {
-                const Component = widgetMap[name];
+              {w.map(({ name, column, row, Component }) => {
                 return (
-                  <Grid.Item column={column} row={row}>
-                    <Widget>
-                      <Component />
-                    </Widget>
-                  </Grid.Item>
+                  <Widget name={name} key={name} row={row} column={column}>
+                    <Component />
+                  </Widget>
                 );
               })}
             </Grid>
