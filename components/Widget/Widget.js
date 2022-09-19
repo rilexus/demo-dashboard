@@ -1,6 +1,7 @@
 import { useDrag, useDrop } from "react-dnd";
 import Grid from "../Grid/Grid";
 import { useStyle } from "../../ui/hooks";
+import { replace } from "../../core/widget/widget";
 
 const ItemTypes = {
   WIDGET: "widget",
@@ -31,8 +32,7 @@ const useWidgetDragAndDrop = ({ name }) => {
     () => ({
       accept: ItemTypes.WIDGET,
       drop: (droppedItem) => {
-        // TODO: re-order widgets
-        console.log(`drop of: ${droppedItem.name} on ${name}`);
+        replace(name, droppedItem.name);
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),

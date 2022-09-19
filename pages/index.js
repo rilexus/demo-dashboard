@@ -1,8 +1,6 @@
-import styled, { css } from "styled-components";
-import { InputLarge, Tile, Title } from "../ui";
+import { InputLarge } from "../ui";
 import { Button, ConfirmButton, MenuButton } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
-import { colors } from "../ui/theme/theme";
 import { Grid, Sidebar, Widget } from "../components";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -79,8 +77,7 @@ const Dashboard = ({ children }) => {
   return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
 };
 export default function Home() {
-  const [w] = useWidgets();
-
+  const [widgets] = useWidgets();
   return (
     <Layout
       sidebar={<Sidebar />}
@@ -94,7 +91,7 @@ export default function Home() {
           </Flex>
           <Dashboard>
             <Grid gutter={"1rem"}>
-              {w.map(({ name, column, row, Component }) => {
+              {widgets.map(({ name, column, row, Component }) => {
                 return (
                   <Widget name={name} key={name} row={row} column={column}>
                     <Component />

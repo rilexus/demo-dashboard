@@ -1,14 +1,14 @@
 import { useStyle } from "../../ui/hooks";
 
-const Grid = ({ children }) => {
+const Grid = ({ children, gutter }) => {
   const style = useStyle(
     {
       display: "grid",
       gridTemplateColumns: "1fr 1fr 1fr 1fr",
-      columnGap: "1rem",
-      rowGap: "1rem",
+      columnGap: gutter,
+      rowGap: gutter,
     },
-    []
+    [gutter]
   );
   return <div style={style}>{children}</div>;
 };

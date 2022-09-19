@@ -94,12 +94,22 @@ class Widgets extends Statefull {
     this.widgets = state;
     super.notify();
   }
+
+  replace(name, withName) {
+    console.log(`Replace: ${name} with ${withName}`);
+    // TODO: implement replace
+    console.warn("Widget/replace(): is not implemented yet!");
+  }
 }
 
 const widgets = new Widgets();
+
+const replace = (name, withName) => {
+  widgets.replace(name, withName);
+};
 
 const useWidgets = () => {
   return useSubscription(widgets);
 };
 
-export { useWidgets, widgets };
+export { useWidgets, widgets, replace };
