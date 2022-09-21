@@ -93,18 +93,16 @@ const TileWhite = styled(Tile)`
   box-shadow: ${shadows("2")};
 `;
 
-const DialogTransition = ({ children, ...props }) => {
+const DialogTransition = ({ children, onExit, ...props }) => {
   return (
-    <FadeInTransition timeout={200} from={0} to={1} {...props}>
+    <FadeInTransition timeout={200} from={0} to={1} onExit={onExit} {...props}>
       <TranslateTransition
-        appear
-        in
         timeout={400}
         from={["0px", "0px"]}
         to={["0px", "-3rem"]}
         {...props}
       >
-        <ScaleTransition in timeout={400} from={0.98} to={1} {...props}>
+        <ScaleTransition timeout={400} from={0.98} to={1} {...props}>
           {children}
         </ScaleTransition>
       </TranslateTransition>
@@ -127,6 +125,17 @@ const TileMedia = styled.div`
 export default function Home() {
   const [widgets] = useWidgets();
   const [isOpen, setIsOpen] = useState(false);
+  const [animate, setAnimate] = useState(false);
+
+  const open = () => {
+    setIsOpen(true);
+    setAnimate(true);
+  };
+
+  const close = () => {
+    setIsOpen(false);
+  };
+
   return (
     <Layout
       sidebar={<Sidebar />}
@@ -135,19 +144,13 @@ export default function Home() {
         <div>
           <Flex>
             <ConfirmButton>Publish</ConfirmButton>
-            <Button onClick={() => setIsOpen(true)}>Add a widget</Button>
-            <Dialog
-              open={isOpen}
-              onClick={() => setIsOpen(false)}
-              delay={{ open: 0, close: 2000 }}
-            >
-              <TransitionGroup appear>
-                <DialogTransition>
-                  <TileMedia>
-                    <TileWhite>animate</TileWhite>
-                  </TileMedia>
-                </DialogTransition>
-              </TransitionGroup>
+            <Button onClick={open}>Add a widget</Button>
+            <Dialog open={isOpen} onClick={() => setAnimate(false)}>
+              <DialogTransition in={animate} onExited={close}>
+                <TileMedia>
+                  <TileWhite>animate</TileWhite>
+                </TileMedia>
+              </DialogTransition>
             </Dialog>
             <MenuButton />
           </Flex>
