@@ -6,7 +6,7 @@ import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useWidgets } from "../core/widget/widget";
 import { Dialog } from "../ui/Dialog";
-import { useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import styled from "styled-components";
 import { colors, shadows } from "../ui/theme/theme";
 import { TransitionGroup } from "react-transition-group";
@@ -122,8 +122,10 @@ const TileMedia = styled.div`
   `}
 `;
 
-export default function Home() {
-  const [widgets] = useWidgets();
+const AnimatedDialog = forwardRef(function AnimatedDialog(
+  { children, onClick, ...props },
+  ref
+) {
   const [isOpen, setIsOpen] = useState(false);
   const [animate, setAnimate] = useState(false);
 
@@ -136,6 +138,35 @@ export default function Home() {
     setIsOpen(false);
   };
 
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        open,
+        close: () => {
+          setAnimate(false);
+        },
+      };
+    },
+    []
+  );
+
+  return (
+    <Dialog open={isOpen} onClick={onClick}>
+      <DialogTransition in={animate} onExited={close}>
+        <TileMedia>
+          <TileWhite>{children}</TileWhite>
+        </TileMedia>
+      </DialogTransition>
+    </Dialog>
+  );
+});
+
+export default function Home() {
+  const [widgets] = useWidgets();
+
+  const ref = useRef(null);
+
   return (
     <Layout
       sidebar={<Sidebar />}
@@ -144,14 +175,10 @@ export default function Home() {
         <div>
           <Flex>
             <ConfirmButton>Publish</ConfirmButton>
-            <Button onClick={open}>Add a widget</Button>
-            <Dialog open={isOpen} onClick={() => setAnimate(false)}>
-              <DialogTransition in={animate} onExited={close}>
-                <TileMedia>
-                  <TileWhite>animate</TileWhite>
-                </TileMedia>
-              </DialogTransition>
-            </Dialog>
+            <Button onClick={() => ref.current.open()}>Add a widget</Button>
+            <AnimatedDialog ref={ref} onClick={() => ref.current.close()}>
+              animated
+            </AnimatedDialog>
             <MenuButton />
           </Flex>
           <Dashboard>
