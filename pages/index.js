@@ -162,10 +162,21 @@ const AnimatedDialog = forwardRef(function AnimatedDialog(
   );
 });
 
+const AddWidgetButton = (props) => {
+  return <Button {...props}>Add widget</Button>;
+};
+
 export default function Home() {
   const [widgets] = useWidgets();
+  const dialogRef = useRef(null);
 
-  const ref = useRef(null);
+  const open = () => {
+    dialogRef.current.open();
+  };
+
+  const close = () => {
+    dialogRef.current.close();
+  };
 
   return (
     <Layout
@@ -175,8 +186,8 @@ export default function Home() {
         <div>
           <Flex>
             <ConfirmButton>Publish</ConfirmButton>
-            <Button onClick={() => ref.current.open()}>Add a widget</Button>
-            <AnimatedDialog ref={ref} onClick={() => ref.current.close()}>
+            <AddWidgetButton onClick={open} />
+            <AnimatedDialog ref={dialogRef} onClick={close}>
               animated
             </AnimatedDialog>
             <MenuButton />
