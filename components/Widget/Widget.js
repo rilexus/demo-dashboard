@@ -51,6 +51,9 @@ const Widget = ({ children, name, column, row }) => {
     {
       height: "100%",
       width: "100%",
+      // transition: "transform 200ms",
+      // borderRadius: "1rem",
+      // transform: isOver ? "scale(0.99)" : "scale(1)",
       border: isOver ? "2px dashed gray" : "2px dashed transparent",
       opacity: isDragging ? 0.5 : 1,
     },

@@ -32,7 +32,11 @@ class Statefull {
   }
 
   setState(state) {
-    this.state = state;
+    if (typeof state === "function") {
+      this.state = state(this.getState());
+    } else {
+      this.state = state;
+    }
     this.notify();
   }
 
@@ -46,59 +50,94 @@ class Statefull {
   }
 }
 class Widgets extends Statefull {
-  widgets = [
-    { Component: Summary, name: "Summary", column: [1, 4], row: [1, 1] },
-    {
-      Component: Sales,
-      name: "Sales",
-      column: [3, 4],
-      row: [2, 3],
-    },
-    {
-      Component: Visitors,
-      name: "Visitors",
-      column: [1, 3],
-      row: [2, 3],
-    },
-    {
-      Component: Insights,
-      name: "Insights",
-      column: [4, 5],
-      row: [1, 3],
-    },
-    {
-      Component: Activity,
-      name: "Activity",
-      column: [],
-      row: [],
-    },
-    {
-      Component: Orders,
-      name: "Orders",
-      column: [],
-      row: [],
-    },
-    {
-      Component: Carts,
-      name: "Carts",
-      column: [],
-      row: [],
-    },
-  ];
-
-  getState() {
-    return this.widgets;
-  }
-
-  setState(state) {
-    this.widgets = state;
-    super.notify();
+  constructor() {
+    super();
+    this.state = [
+      { Component: Summary, name: "Summary", column: [1, 4], row: [1, 1] },
+      {
+        Component: Sales,
+        name: "Sales",
+        height: 1,
+        width: 1,
+        column: [3, 4],
+        row: [2, 3],
+      },
+      {
+        Component: Visitors,
+        name: "Visitors",
+        height: 1,
+        width: 2,
+        column: [1, 3],
+        row: [2, 3],
+      },
+      {
+        Component: Insights,
+        name: "Insights",
+        column: [4, 5],
+        row: [1, 3],
+      },
+      {
+        Component: Activity,
+        name: "Activity",
+        column: [1, 2],
+        row: [3, 4],
+      },
+      {
+        Component: Orders,
+        name: "Orders",
+        column: [2, 3],
+        row: [3, 4],
+      },
+      {
+        Component: Carts,
+        name: "Carts",
+        column: [3, 5],
+        row: [3, 4],
+      },
+    ];
   }
 
   replace(name, withName) {
-    console.log(`Replace: ${name} with ${withName}`);
-    // TODO: implement replace
-    console.warn("Widget/replace(): is not implemented yet!");
+    const targetWidget = this.getState().find(
+      ({ name: widgetName }) => name === widgetName
+    );
+
+    const sourceWidget = this.getState().find(
+      ({ name: widgetName }) => widgetName === withName
+    );
+
+    const {
+      column: [targetColumnStart, targetColumnEnd],
+    } = targetWidget;
+
+    const {
+      column: [sourceColumnStart, sourceColumnEnd],
+    } = sourceWidget;
+
+    const newColumn1 = [
+      targetColumnStart,
+      targetColumnStart + (sourceColumnEnd - sourceColumnStart),
+    ];
+
+    const newColumn2 = [
+      newColumn1[1],
+      newColumn1[1] + targetColumnEnd - targetColumnStart,
+    ];
+
+    this.setState((state) => {
+      return state.map((widget) => {
+        if (widget.name === targetWidget.name) {
+          return {
+            ...widget,
+            column: newColumn2,
+          };
+        }
+        if (widget.name === sourceWidget.name) {
+          return { ...widget, column: newColumn1 };
+        }
+        return widget;
+      });
+    });
   }
 }
 

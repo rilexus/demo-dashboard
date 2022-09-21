@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
 import styled from "styled-components";
+import mergeRefs from "../utils/mergeRefs/mergeRefs";
 
 const StyledDialog = styled.dialog`
   background: transparent;
@@ -12,7 +13,10 @@ const StyledDialog = styled.dialog`
   }
 `;
 
-const Dialog = ({ open, children, onClick, ...props }) => {
+const Dialog = forwardRef(function Dialog(
+  { open, children, onClick, ...props },
+  outsideRef
+) {
   const dialogRef = useRef(null);
   const childRef = useRef(null);
 
@@ -33,14 +37,14 @@ const Dialog = ({ open, children, onClick, ...props }) => {
 
   return (
     <StyledDialog
-      data-open={open}
-      ref={dialogRef}
       {...props}
+      ref={mergeRefs(dialogRef, outsideRef)}
+      data-open={open}
       onClick={handleClick}
     >
-      <div ref={childRef}>{children}</div>
+      <div ref={childRef}>{open && children}</div>
     </StyledDialog>
   );
-};
+});
 
 export default Dialog;
