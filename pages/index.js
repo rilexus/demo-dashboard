@@ -6,15 +6,9 @@ import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useWidgets } from "../core/widget/widget";
 import { Dialog } from "../ui/Dialog";
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { colors, shadows } from "../ui/theme/theme";
-import { TransitionGroup } from "react-transition-group";
-import {
-  FadeInTransition,
-  ScaleTransition,
-  TranslateTransition,
-} from "react-transitions-library";
 import { md, sm } from "../ui/Grid/medias";
 
 const Select = () => {
@@ -93,23 +87,6 @@ const TileWhite = styled(Tile)`
   box-shadow: ${shadows("2")};
 `;
 
-const DialogTransition = ({ children, onExit, ...props }) => {
-  return (
-    <FadeInTransition timeout={200} from={0} to={1} onExit={onExit} {...props}>
-      <TranslateTransition
-        timeout={400}
-        from={["0px", "0px"]}
-        to={["0px", "-3rem"]}
-        {...props}
-      >
-        <ScaleTransition timeout={400} from={0.98} to={1} {...props}>
-          {children}
-        </ScaleTransition>
-      </TranslateTransition>
-    </FadeInTransition>
-  );
-};
-
 const TileMedia = styled.div`
   padding-top: 3rem;
   ${sm`
@@ -121,46 +98,6 @@ const TileMedia = styled.div`
     height: 50vh;
   `}
 `;
-
-const AnimatedDialog = forwardRef(function AnimatedDialog(
-  { children, onClick, ...props },
-  ref
-) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [animate, setAnimate] = useState(false);
-
-  const open = () => {
-    setIsOpen(true);
-    setAnimate(true);
-  };
-
-  const close = () => {
-    setIsOpen(false);
-  };
-
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        open,
-        close: () => {
-          setAnimate(false);
-        },
-      };
-    },
-    []
-  );
-
-  return (
-    <Dialog open={isOpen} onClick={onClick}>
-      <DialogTransition in={animate} onExited={close}>
-        <TileMedia>
-          <TileWhite>{children}</TileWhite>
-        </TileMedia>
-      </DialogTransition>
-    </Dialog>
-  );
-});
 
 const AddWidgetButton = (props) => {
   return <Button {...props}>Add widget</Button>;
@@ -187,9 +124,11 @@ export default function Home() {
           <Flex>
             <ConfirmButton>Publish</ConfirmButton>
             <AddWidgetButton onClick={open} />
-            <AnimatedDialog ref={dialogRef} onClick={close}>
-              animated
-            </AnimatedDialog>
+            <Dialog ref={dialogRef} onClick={close}>
+              <TileMedia>
+                <TileWhite>animated</TileWhite>
+              </TileMedia>
+            </Dialog>
             <MenuButton />
           </Flex>
           <Dashboard>
