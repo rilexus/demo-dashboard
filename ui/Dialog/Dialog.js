@@ -17,7 +17,6 @@ const StyledDialog = styled.dialog`
   background: transparent;
   border: none;
   padding: 0;
-
   &::backdrop {
     background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
@@ -111,7 +110,13 @@ const AnimatedDialog = forwardRef(function AnimatedDialog(
   return (
     <Dialog open={isOpen} onClick={onClick}>
       <DialogTransition in={animate} onExited={close}>
-        {children}
+        <div
+          style={{
+            paddingTop: "3rem",
+          }}
+        >
+          {children}
+        </div>
       </DialogTransition>
     </Dialog>
   );

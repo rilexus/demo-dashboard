@@ -88,7 +88,6 @@ const TileWhite = styled(Tile)`
 `;
 
 const TileMedia = styled.div`
-  padding-top: 3rem;
   ${sm`
     width: 90vw;
     height: 90vh;

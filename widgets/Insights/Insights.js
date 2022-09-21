@@ -5,8 +5,8 @@ import { Body, Subtitle } from "../../ui/typography";
 import styled, { css } from "styled-components";
 import { colors } from "../../ui/theme/theme";
 import { buttonSubtleHoverCss } from "../../ui/buttons/Button/Button";
-import { Dialog as UIDialog } from "../../ui/Dialog";
-import { useState } from "react";
+import { Dialog } from "../../ui/Dialog";
+import { useRef } from "react";
 
 const greenGradient = css`
   background: ${({ theme }) => {
@@ -30,21 +30,8 @@ const TileWhite = styled(Tile)`
   background-color: white;
 `;
 
-const Dialog = styled(UIDialog)`
-  &::backdrop {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(0px);
-  }
-  &[data-open="true"] {
-    color: #e18728;
-  }
-  &[data-open="false"] {
-    color: #e18728;
-  }
-`;
-
 const Insights = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const dialogRef = useRef(null);
   return (
     <InsightsTile>
       <Tile.Head>
@@ -63,14 +50,20 @@ const Insights = () => {
           You had 751 users yesterday. 51 came back today which means you had 10
           .3% of your users returned to your site.
         </Body>
-        <Dialog open={isOpen} onClick={() => setIsOpen(false)}>
-          <TileWhite>some</TileWhite>
+        <Dialog ref={dialogRef} onClick={() => dialogRef.current.close()}>
+          <div
+            style={{
+              padding: "1rem",
+            }}
+          >
+            <TileWhite>some</TileWhite>
+          </div>
         </Dialog>
       </Tile.Body>
       <Tile.Footer>
         <GreedButton
           onClick={() => {
-            setIsOpen(true);
+            dialogRef.current.open();
           }}
         >
           View More
