@@ -1,8 +1,10 @@
 import themeColors from "./colors";
 import { access } from "./ThemeProvider";
+import shadowsTheme from "./shadows";
 
 const theme = {
   colors: themeColors,
+  shadows: shadowsTheme,
   gradients: {
     1: `linear-gradient(0deg, ${themeColors.green[2]} 0%, ${themeColors.green[3]} 100%);`,
     2: `linear-gradient(0deg, ${themeColors.green[5]} 0%, ${themeColors.green[6]} 100%);`,
@@ -17,6 +19,11 @@ const gradients =
   (path) =>
   ({ theme }) =>
     access(`gradients.${path}`, theme);
+
+const shadows =
+  (path) =>
+  ({ theme }) =>
+    access(`shadows.${path}`, theme);
 
 const memo = (factory) => {
   let lastArgs = null;
@@ -54,5 +61,5 @@ const colors = (path) => {
   };
 };
 
-export { colors, gradients };
+export { colors, gradients, shadows };
 export default theme;

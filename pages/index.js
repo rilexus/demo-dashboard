@@ -8,7 +8,7 @@ import { useWidgets } from "../core/widget/widget";
 import { Dialog } from "../ui/Dialog";
 import { useState } from "react";
 import styled from "styled-components";
-import { colors } from "../ui/theme/theme";
+import { colors, shadows } from "../ui/theme/theme";
 import { TransitionGroup } from "react-transition-group";
 import {
   FadeInTransition,
@@ -90,20 +90,21 @@ const Dashboard = ({ children }) => {
 
 const TileWhite = styled(Tile)`
   background-color: ${colors("white.1")};
+  box-shadow: ${shadows("2")};
 `;
 
 const DialogTransition = ({ children, ...props }) => {
   return (
-    <FadeInTransition timeout={400} from={0} to={1} {...props}>
+    <FadeInTransition timeout={200} from={0} to={1} {...props}>
       <TranslateTransition
         appear
         in
-        timeout={700}
+        timeout={400}
         from={["0px", "0px"]}
-        to={["0px", "-20px"]}
+        to={["0px", "-3rem"]}
         {...props}
       >
-        <ScaleTransition in timeout={700} from={0.98} to={1} {...props}>
+        <ScaleTransition in timeout={400} from={0.98} to={1} {...props}>
           {children}
         </ScaleTransition>
       </TranslateTransition>
@@ -112,7 +113,7 @@ const DialogTransition = ({ children, ...props }) => {
 };
 
 const TileMedia = styled.div`
-  padding: 50px;
+  padding-top: 3rem;
   ${sm`
     width: 90vw;
     height: 90vh;
@@ -135,7 +136,11 @@ export default function Home() {
           <Flex>
             <ConfirmButton>Publish</ConfirmButton>
             <Button onClick={() => setIsOpen(true)}>Add a widget</Button>
-            <Dialog open={isOpen} onClick={() => setIsOpen(false)}>
+            <Dialog
+              open={isOpen}
+              onClick={() => setIsOpen(false)}
+              delay={{ open: 0, close: 2000 }}
+            >
               <TransitionGroup appear>
                 <DialogTransition>
                   <TileMedia>
