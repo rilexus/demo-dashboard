@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import mergeRefs from "../utils/mergeRefs/mergeRefs";
 import {
   FadeInTransition,
@@ -13,13 +13,27 @@ import {
   TranslateTransition,
 } from "react-transitions-library";
 
+const backdropFade = keyframes`
+  from {
+    background: transparent;
+  }
+  to{
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+`;
+
 const StyledDialog = styled.dialog`
   background: transparent;
   border: none;
   padding: 0;
-  &::backdrop {
-    background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(3px);
+
+  &[data-animate="true"]::backdrop {
+    animation: ${backdropFade} 400ms ease forwards;
+  }
+  &[data-animate="false"]::backdrop {
+    animation: ${backdropFade} 400ms ease backwards;
+    animation-direction: reverse;
   }
 `;
 
@@ -33,9 +47,9 @@ const Dialog = forwardRef(function Dialog(
   useEffect(() => {
     let timer = null;
     if (open) {
-      dialogRef.current?.showModal();
+      dialogRef.current?.showModal?.();
     } else {
-      dialogRef.current?.close();
+      dialogRef.current?.close?.();
     }
     return () => {
       clearTimeout(timer);
@@ -63,7 +77,7 @@ const Dialog = forwardRef(function Dialog(
 
 const DialogTransition = ({ children, onExit, ...props }) => {
   return (
-    <FadeInTransition timeout={200} from={0} to={1} onExit={onExit} {...props}>
+    <FadeInTransition timeout={400} from={0} to={1} onExit={onExit} {...props}>
       <TranslateTransition
         timeout={400}
         from={["0px", "0px"]}
@@ -108,7 +122,7 @@ const AnimatedDialog = forwardRef(function AnimatedDialog(
   );
 
   return (
-    <Dialog open={isOpen} onClick={onClick}>
+    <Dialog open={isOpen} onClick={onClick} data-animate={animate}>
       <DialogTransition in={animate} onExited={close}>
         <div
           style={{
