@@ -88,15 +88,18 @@ const Pill = styled.div`
   font-weight: 500;
 `;
 const FailedStatus = styled(Pill)`
+  width: 45px;
   color: ${colors("red.2")};
   background-color: ${colors("red.1")};
 `;
 const PendingStatus = styled(Pill)`
+  width: 45px;
   color: ${colors("yellow.5")};
   background-color: ${colors("yellow.2")};
 `;
 
 const PaidStatus = styled(Pill)`
+  width: 45px;
   color: ${colors("green.1")};
   background-color: ${colors("green.10")};
 `;
@@ -139,23 +142,29 @@ const Table = styled.table`
   list-style: none;
   ${m0};
   ${p0};
+  padding-left: 1rem;
+`;
+
+const Td = styled.td`
+  padding: 1rem 0;
+  margin: 0.25rem 0.5rem;
 `;
 
 const Tr = styled.tr`
-  ${flex};
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0.5rem;
-
   ${textBase};
 
   z-index: 1000;
   transition: transform 70ms;
-  margin: 0.25rem 0.5rem;
   cursor: pointer;
   &:hover {
     transform: scale(1.02);
   }
+`;
+const Scroll = styled.div`
+  max-height: 300px;
+  ${scrollbarNoneCss};
+  ${scrollY};
+  overflow-x: visible;
 `;
 
 const Name = styled.div`
@@ -165,16 +174,11 @@ const Name = styled.div`
 const ID = styled.div`
   ${fontMedium};
 `;
-const Scroll = styled.div`
-  max-height: 300px;
-  ${scrollbarNoneCss};
-  ${scrollY};
-  overflow-x: visible;
-`;
 const Orders = () => {
   return (
     <Tile
       style={{
+        paddingLeft: 0,
         position: "relative",
       }}
     >
@@ -190,6 +194,7 @@ const Orders = () => {
       </div>
       <Tile.Head
         style={{
+          paddingLeft: "1rem",
           position: "relative",
         }}
       >
@@ -201,16 +206,24 @@ const Orders = () => {
             {orders.map((order) => {
               return (
                 <Tr key={order.id}>
-                  <td>
+                  <Td
+                    style={{
+                      textAlign: "left",
+                    }}
+                  >
                     <ID>{order.id}</ID>
-                  </td>
+                  </Td>
                   <td>
                     <Time>{order.time}</Time>
                   </td>
                   <td>
                     <Name>{order.user.name}</Name>
                   </td>
-                  <td>
+                  <td
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
                     <Status status={order.status} />
                   </td>
                   <td
