@@ -58,14 +58,14 @@ class Widgets extends Statefull {
         name: "Summary",
         position: [1, 1],
         height: 1,
-        width: 4,
+        width: 3,
       },
       {
         Component: Insights,
         name: "Insights",
         height: 2,
         width: 1,
-        position: [2, 4],
+        position: [1, 4],
       },
       {
         Component: Sales,
@@ -88,13 +88,13 @@ class Widgets extends Statefull {
         height: 1,
         width: 2,
       },
-      // {
-      //   Component: Orders,
-      //   name: "Orders",
-      //   height: 1,
-      //   width: 1,
-      //   position: [3, 2],
-      // },
+      {
+        Component: Orders,
+        name: "Orders",
+        height: 1,
+        width: 2,
+        position: [3, 3],
+      },
       // {
       //   Component: Carts,
       //   name: "Carts",

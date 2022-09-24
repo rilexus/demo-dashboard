@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ButtonStyleless } from "../buttons";
 import ArrowDown from "../icons/ArrowDownIcon";
 import { colors } from "../theme/theme";
+import bgCss from "../BG/bg.css";
 
 const ArrowButton = ({ onClick, ...props }) => (
   <ButtonStyleless
@@ -22,13 +23,13 @@ const StyledSelect = styled.select`
   // A reset of styles, including removing the default dropdown arrow
   appearance: none;
   // Additional resets for further consistency
-  background-color: ${colors("gray.2")};
+  ${bgCss};
 
   width: 100%;
 
   font-family: inherit;
   font-size: inherit;
-  font-weight: inherit;
+  font-weight: 500;
 
   cursor: pointer;
   line-height: inherit;
@@ -37,7 +38,7 @@ const StyledSelect = styled.select`
   border-color: transparent;
   border-radius: 0.5rem;
 
-  padding: 0.5em 0.8em;
+  padding: 0.5em 0.9em;
   padding-right: 1.5em;
   margin: 0;
 `;

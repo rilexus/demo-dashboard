@@ -12,17 +12,23 @@ import { colors, shadows } from "../ui/theme/theme";
 import { md, sm } from "../ui/Grid/medias";
 import AnimatedDialog from "../ui/Dialog/Dialog";
 import { scrollbarNoneCss } from "../ui/css/scrollbar";
-
-const Select = () => {
-  return <div>select</div>;
-};
+import Select from "../ui/Select/Select";
 
 const Header = () => {
   return (
-    <div>
-      <Select />
-      <InputLarge placeholder={"Search"} />
-    </div>
+    <Flex
+      justify={"center"}
+      style={{
+        padding: ".5rem 0",
+      }}
+    >
+      <InputLarge
+        placeholder={"Search"}
+        style={{
+          width: "400px",
+        }}
+      />
+    </Flex>
   );
 };
 
@@ -196,19 +202,49 @@ export default function Home() {
       header={<Header />}
       main={
         <div>
-          <Flex>
-            <ConfirmButton>Publish</ConfirmButton>
-            <AddWidgetButton onClick={open} />
-            <Dialog ref={dialogRef} onClick={close}>
-              <TileMedia>
-                <TileWhite>
-                  <TileWhite.Body>
-                    <WidgetsMenu />
-                  </TileWhite.Body>
-                </TileWhite>
-              </TileMedia>
-            </Dialog>
-            <MenuButton />
+          <Flex justify={"space-between"} align={"center"}>
+            <div
+              style={{
+                paddingLeft: ".5rem",
+                paddingBottom: "1.5rem",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "1.7rem",
+                  fontWeight: 600,
+                }}
+              >
+                Dashboard
+              </div>
+              <div
+                style={{
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
+                  color: "gray",
+                }}
+              >
+                Monday, 3 September 2022
+              </div>
+            </div>
+            <Flex align={"center"}>
+              {/*<ConfirmButton>Publish</ConfirmButton>*/}
+              {/*<AddWidgetButton onClick={open} />*/}
+              {/*<Dialog ref={dialogRef} onClick={close}>*/}
+              {/*  <TileMedia>*/}
+              {/*    <TileWhite>*/}
+              {/*      <TileWhite.Body>*/}
+              {/*        <WidgetsMenu />*/}
+              {/*      </TileWhite.Body>*/}
+              {/*    </TileWhite>*/}
+              {/*  </TileMedia>*/}
+              {/*</Dialog>*/}
+              {/*<MenuButton />*/}
+              <Select>
+                <option>Today</option>
+                <option>Yesterday</option>
+              </Select>
+            </Flex>
           </Flex>
           <Dashboard>
             <Grid gutter={"1rem"}>

@@ -165,7 +165,6 @@ const Activity = withCssContainer(() => {
           right: "1rem",
           top: "1rem",
           fontWeight: 500,
-          // minWidth: "90px",
         }}
       >
         <ActivitySelect />
