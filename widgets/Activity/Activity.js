@@ -6,6 +6,7 @@ import { m0, p0, scrollY, textBase } from "../../ui/css";
 import { block, flex } from "../../ui/css/display";
 import Container, { container } from "../../ui/utils/container/container";
 import Select from "../../ui/Select/Select";
+import { colors } from "../../ui/theme/theme";
 
 const activities = [
   {
@@ -139,14 +140,17 @@ const PublishedProductContainer = styled.div`
     display: none;
   `};
 `;
+const DarkSelect = styled(Select)`
+  background-color: ${colors("gray.2")};
+`;
 
 const ActivitySelect = () => {
   return (
-    <Select>
+    <DarkSelect>
       <option>Publications</option>
       <option>Registrations</option>
       <option>Purchases</option>
-    </Select>
+    </DarkSelect>
   );
 };
 
@@ -164,7 +168,6 @@ const Activity = withCssContainer(() => {
           position: "absolute",
           right: "1rem",
           top: "1rem",
-          fontWeight: 500,
         }}
       >
         <ActivitySelect />

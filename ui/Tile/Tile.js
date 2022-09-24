@@ -13,13 +13,15 @@ const Tile = styled(BG)`
   justify-content: space-between;
 `;
 
-Tile.Head = ({ children }) => {
+Tile.Head = ({ children, ...props }) => {
   return (
     <div
+      {...props}
       style={{
         paddingBottom: "1rem",
         maxHeight: "2rem",
         flexGrow: 1,
+        ...props.style,
       }}
     >
       {children}
