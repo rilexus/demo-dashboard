@@ -7,10 +7,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { useWidgets } from "../core/widget/widget";
 import { Dialog } from "../ui/Dialog";
 import React, { useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { colors, shadows } from "../ui/theme/theme";
 import { md, sm } from "../ui/Grid/medias";
 import AnimatedDialog from "../ui/Dialog/Dialog";
+import { scrollbarNoneCss } from "../ui/css/scrollbar";
 
 const Select = () => {
   return <div>select</div>;
@@ -88,9 +89,7 @@ const TileWhite = styled(Tile)`
   box-shadow: ${shadows("2")};
   overflow-y: scroll;
   position: relative;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  ${scrollbarNoneCss};
 `;
 
 const TileMedia = styled.div`

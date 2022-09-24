@@ -1,5 +1,9 @@
 import { css } from "styled-components";
 
+const p0 = css`
+  padding: 0;
+`;
+
 const p25 = css`
   padding: 0.625rem; /* 10px */
 `;
@@ -29,4 +33,4 @@ const px6 = css`
   padding-right: 1.5rem; /* 24px */
 `;
 
-export { p3, p35, p4, px4, px6, p25, p5 };
+export { p3, p35, p4, px4, px6, p25, p5, p0 };

@@ -62,7 +62,6 @@ const container = (query) => {
       if (!isMatch) {
         return "";
       }
-      console.log(args);
       return css`
         ${args}
       `;

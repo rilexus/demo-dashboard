@@ -86,22 +86,22 @@ class Widgets extends Statefull {
         name: "Activity",
         position: [3, 1],
         height: 1,
-        width: 1,
+        width: 2,
       },
-      {
-        Component: Orders,
-        name: "Orders",
-        height: 1,
-        width: 1,
-        position: [3, 2],
-      },
-      {
-        Component: Carts,
-        name: "Carts",
-        height: 1,
-        width: 1,
-        position: [3, 3],
-      },
+      // {
+      //   Component: Orders,
+      //   name: "Orders",
+      //   height: 1,
+      //   width: 1,
+      //   position: [3, 2],
+      // },
+      // {
+      //   Component: Carts,
+      //   name: "Carts",
+      //   height: 1,
+      //   width: 1,
+      //   position: [3, 3],
+      // },
     ];
   }
 
