@@ -4,7 +4,7 @@ const Grid = ({ children, gutter }) => {
   const style = useStyle(
     {
       display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr 1fr",
+      gridTemplateColumns: "repeat(4, 1fr)",
       columnGap: gutter,
       rowGap: gutter,
     },

@@ -10,8 +10,6 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { colors, shadows } from "../ui/theme/theme";
 import { md, sm } from "../ui/Grid/medias";
-import { CloseIcon } from "../ui/icons";
-import { IconButton } from "../ui/buttons/IconButton";
 import AnimatedDialog from "../ui/Dialog/Dialog";
 
 const Select = () => {
@@ -215,9 +213,15 @@ export default function Home() {
           </Flex>
           <Dashboard>
             <Grid gutter={"1rem"}>
-              {widgets.map(({ name, column, row, Component }) => {
+              {widgets.map(({ name, Component, position, width, height }) => {
                 return (
-                  <Widget name={name} key={name} row={row} column={column}>
+                  <Widget
+                    name={name}
+                    key={name}
+                    position={position}
+                    height={height}
+                    width={width}
+                  >
                     <Component />
                   </Widget>
                 );

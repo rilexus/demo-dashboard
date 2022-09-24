@@ -11,7 +11,6 @@ import KebabButton from "../../ui/buttons/KebabButton/KebabButton";
 
 const BarWrapper = styled.div`
   width: 100%;
-  min-height: 10rem;
   height: 100%;
   ${rounded};
   flex-direction: column-reverse;

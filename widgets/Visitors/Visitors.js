@@ -45,12 +45,11 @@ const Tip = ({ value }) => {
 
 const BarWrapper = styled.div`
   width: 100%;
-  min-height: 10rem;
   height: 100%;
+  min-height: 200px;
   ${rounded};
   flex-direction: column-reverse;
   display: flex;
-
   background-color: ${colors("gray.2")};
   margin-right: 0.5rem;
 `;

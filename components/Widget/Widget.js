@@ -44,13 +44,14 @@ const useWidgetDragAndDrop = ({ name }) => {
   return [{ isDragging, isOver }, mergeRefs(dragRef, dropRef)];
 };
 
-const Widget = ({ children, name, column, row }) => {
+const Widget = ({ children, name, position, height, width }) => {
   const [{ isOver, isDragging }, ref] = useWidgetDragAndDrop({ name });
 
   const style = useStyle(
     {
       height: "100%",
       width: "100%",
+      boxSizing: "border-box",
       border: isOver ? "2px dashed gray" : "2px dashed transparent",
       opacity: isDragging ? 0.5 : 1,
     },
@@ -58,7 +59,10 @@ const Widget = ({ children, name, column, row }) => {
   );
 
   return (
-    <Grid.Item column={column} row={row}>
+    <Grid.Item
+      row={[position[0], position[0] + height]}
+      column={[position[1], position[1] + width]}
+    >
       <div ref={ref} className={"widget"} style={style}>
         {children}
       </div>
