@@ -1,7 +1,7 @@
 import { useDrag, useDrop } from "react-dnd";
 import Grid from "../Grid/Grid";
 import { useStyle } from "../../ui/hooks";
-import { replace } from "../../core/widget/widget";
+import { reorder } from "../../core/widget/widget";
 
 const ItemTypes = {
   WIDGET: "widget",
@@ -19,10 +19,10 @@ const mergeRefs = (...refs) => {
   };
 };
 
-const useWidgetDragAndDrop = ({ name }) => {
+const useWidgetDragAndDrop = (widget) => {
   const [{ isDragging }, dragRef] = useDrag(() => ({
     type: ItemTypes.WIDGET,
-    item: { name },
+    item: widget,
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -31,8 +31,8 @@ const useWidgetDragAndDrop = ({ name }) => {
   const [{ isOver }, dropRef] = useDrop(
     () => ({
       accept: ItemTypes.WIDGET,
-      drop: (droppedItem) => {
-        replace(name, droppedItem.name);
+      drop: (droppedWidget) => {
+        reorder(widget, droppedWidget);
       },
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
@@ -44,8 +44,9 @@ const useWidgetDragAndDrop = ({ name }) => {
   return [{ isDragging, isOver }, mergeRefs(dragRef, dropRef)];
 };
 
-const Widget = ({ children, name, position, height, width }) => {
-  const [{ isOver, isDragging }, ref] = useWidgetDragAndDrop({ name });
+const Widget = ({ children, widget }) => {
+  const { position, height, width } = widget;
+  const [{ isOver, isDragging }, ref] = useWidgetDragAndDrop(widget);
 
   const style = useStyle(
     {

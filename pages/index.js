@@ -248,16 +248,10 @@ export default function Home() {
           </Flex>
           <Dashboard>
             <Grid gutter={"1rem"}>
-              {widgets.map(({ name, Component, position, width, height }) => {
+              {widgets.map((widget) => {
                 return (
-                  <Widget
-                    name={name}
-                    key={name}
-                    position={position}
-                    height={height}
-                    width={width}
-                  >
-                    <Component />
+                  <Widget widget={widget} key={widget.name}>
+                    <widget.Component />
                   </Widget>
                 );
               })}

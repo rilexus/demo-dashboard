@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { p5, rounded2xl } from "../../ui/css";
 
 import BG from "../../ui/BG/BG";
+import WidgetsFilledIcon from "../../ui/icons/WidgetsFilledIcon";
+
 const Tile = styled(BG)`
   ${rounded2xl};
   ${p5};
@@ -34,12 +36,24 @@ const PersonButton = () => {
   );
 };
 
+const WidgetButton = () => {
+  return (
+    <div>
+      <Tile>
+        <WidgetsFilledIcon />
+      </Tile>
+    </div>
+  );
+};
+
 const Sidebar = () => {
   return (
     <div
       style={{
         width: "75px",
         height: "100vh",
+        paddingTop: "1rem",
+        borderRight: "1px solid #ececec",
         left: 0,
         top: 0,
         zIndex: 10000,
@@ -55,7 +69,7 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <PersonButton />
+        <WidgetButton />
         <PersonButton />
       </div>
     </div>

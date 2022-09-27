@@ -63,15 +63,8 @@ class Widgets extends Statefull {
       {
         Component: Insights,
         name: "Insights",
-        height: 2,
-        width: 1,
         position: [1, 4],
-      },
-      {
-        Component: Sales,
-        name: "Sales",
-        position: [2, 3],
-        height: 1,
+        height: 2,
         width: 1,
       },
       {
@@ -82,81 +75,67 @@ class Widgets extends Statefull {
         width: 2,
       },
       {
+        Component: Sales,
+        name: "Sales",
+        position: [2, 3],
+        height: 1,
+        width: 1,
+      },
+      {
         Component: Activity,
         name: "Activity",
         position: [3, 1],
         height: 1,
         width: 2,
       },
-      {
-        Component: Orders,
-        name: "Orders",
-        height: 1,
-        width: 2,
-        position: [3, 3],
-      },
       // {
       //   Component: Carts,
       //   name: "Carts",
+      //   position: [3, 2],
       //   height: 1,
-      //   width: 1,
-      //   position: [3, 3],
+      //   width: 2,
       // },
+      {
+        Component: Orders,
+        name: "Orders",
+        position: [3, 3],
+        height: 1,
+        width: 2,
+      },
     ];
   }
 
-  replace(name, withName) {
-    const targetWidget = this.getState().find(
-      ({ name: widgetName }) => name === widgetName
-    );
-
-    const sourceWidget = this.getState().find(
-      ({ name: widgetName }) => widgetName === withName
-    );
-
-    const {
-      column: [targetColumnStart, targetColumnEnd],
-    } = targetWidget;
-
-    const {
-      column: [sourceColumnStart, sourceColumnEnd],
-    } = sourceWidget;
-
-    const newColumn1 = [
-      targetColumnStart,
-      targetColumnStart + (sourceColumnEnd - sourceColumnStart),
-    ];
-
-    const newColumn2 = [
-      newColumn1[1],
-      newColumn1[1] + targetColumnEnd - targetColumnStart,
-    ];
-
-    this.setState((state) => {
-      return state.map((widget) => {
-        if (widget.name === targetWidget.name) {
-          return {
-            ...widget,
-            column: newColumn2,
-          };
-        }
-        if (widget.name === sourceWidget.name) {
-          return { ...widget, column: newColumn1 };
-        }
-        return widget;
-      });
+  sortWidgets(widgets) {
+    const copy = [...widgets];
+    copy.sort((a, b) => {
+      return a.position[0] - b.position[0] || a.position[1] - b.position[1];
     });
+    return copy;
+  }
+
+  reorder(targetWidget, droppedWidget) {
+    let widgets = [...this.state];
+    const targetIndex = widgets.findIndex(
+      (widget) => widget.name === targetWidget.name
+    );
+    const dropIndex = widgets.findIndex(
+      (widget) => widget.name === droppedWidget.name
+    );
+
+    widgets = this.sortWidgets(widgets);
+
+    this.setState(widgets);
   }
 }
 
 const widgets = new Widgets();
 
-const replace = (name, withName) => {
-  widgets.replace(name, withName);
+const reorder = (name, withName) => {
+  widgets.reorder(name, withName);
 };
 
 const useWidgets = () => {
   return useSubscription(widgets);
 };
 
-export { useWidgets, widgets, replace };
+export { useWidgets, widgets, reorder };

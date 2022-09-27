@@ -111,7 +111,7 @@ const Li = styled.li`
   margin: 0.25rem 0.5rem;
   cursor: pointer;
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 `;
 

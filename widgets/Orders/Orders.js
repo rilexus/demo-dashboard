@@ -157,7 +157,7 @@ const Tr = styled.tr`
   transition: transform 70ms;
   cursor: pointer;
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 `;
 const Scroll = styled.div`
