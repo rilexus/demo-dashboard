@@ -91,6 +91,9 @@ class DashboardController extends State {
   }
 
   selectDashboard(name) {
+    if (this.getState().current?.name === name) {
+      return;
+    }
     this.setState((state) => {
       return {
         ...state,

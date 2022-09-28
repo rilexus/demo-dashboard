@@ -48,7 +48,7 @@ const WidgetButton = () => {
 
 const loadIcon = (name) => import(`../../ui/icons/${name}`);
 
-const DynamicIcon = ({ name }) => {
+const DynamicIcon = ({ name, ...props }) => {
   const ref = useRef(null);
   const [, rerender] = useReducer(() => ({}), {});
 
@@ -65,14 +65,14 @@ const DynamicIcon = ({ name }) => {
   return Component ? (
     <div>
       <Tile>
-        <Component />
+        <Component {...props} />
       </Tile>
     </div>
   ) : null;
 };
 
 const Sidebar = () => {
-  const [controllerState] = useDashboardController();
+  const [controllerState, controller] = useDashboardController();
   const dashboards = controllerState.dashboards;
 
   return (
@@ -98,7 +98,15 @@ const Sidebar = () => {
         }}
       >
         {dashboards.map(({ icon, name }) => {
-          return <DynamicIcon name={icon} key={name} />;
+          return (
+            <DynamicIcon
+              name={icon}
+              key={name}
+              onClick={() => {
+                controller.selectDashboard(name);
+              }}
+            />
+          );
         })}
         <PersonButton />
       </div>

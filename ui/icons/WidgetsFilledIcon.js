@@ -6,9 +6,11 @@ const WidgetsFilledIcon = ({
   height = "1em",
   width = "1em",
   strokeWidth = "0",
+  ...props
 }) => {
   return (
     <svg
+      {...props}
       stroke={stroke}
       fill={fill}
       height={height}
