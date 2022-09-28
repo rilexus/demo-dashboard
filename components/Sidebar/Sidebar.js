@@ -1,10 +1,10 @@
-import React from "react";
-import { PersonFilledIcon } from "../../ui/icons";
-
+import React, { useEffect, useReducer, useRef } from "react";
 import styled from "styled-components";
 import { p5, rounded2xl } from "../../ui/css";
-
 import BG from "../../ui/BG/BG";
+import { useDashboardController } from "../../core/DashbordController/DashbordController";
+
+import PersonFilledIcon from "../../ui/icons/PersonFilledIcon";
 import WidgetsFilledIcon from "../../ui/icons/WidgetsFilledIcon";
 
 const Tile = styled(BG)`
@@ -46,7 +46,35 @@ const WidgetButton = () => {
   );
 };
 
+const loadIcon = (name) => import(`../../ui/icons/${name}`);
+
+const DynamicIcon = ({ name }) => {
+  const ref = useRef(null);
+  const [, rerender] = useReducer(() => ({}), {});
+
+  useEffect(() => {
+    loadIcon(name).then(({ default: _default }) => {
+      ref.current = _default;
+
+      rerender();
+    });
+  }, []);
+
+  const Component = ref.current;
+
+  return Component ? (
+    <div>
+      <Tile>
+        <Component />
+      </Tile>
+    </div>
+  ) : null;
+};
+
 const Sidebar = () => {
+  const [controllerState] = useDashboardController();
+  const dashboards = controllerState.dashboards;
+
   return (
     <div
       style={{
@@ -69,7 +97,9 @@ const Sidebar = () => {
           alignItems: "center",
         }}
       >
-        <WidgetButton />
+        {dashboards.map(({ icon, name }) => {
+          return <DynamicIcon name={icon} key={name} />;
+        })}
         <PersonButton />
       </div>
     </div>

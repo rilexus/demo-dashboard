@@ -1,55 +1,13 @@
 import { Sales } from "../../widgets/Sales";
 import { Visitors } from "../../widgets/Visitors";
 import { Insights } from "../../widgets/Insights";
-import { Activity } from "../../widgets/Activity";
+import Activity from "../../widgets/Activity";
 import { Orders } from "../../widgets/Orders";
-import { Carts } from "../../widgets/Carts";
 import useSubscription from "../../hooks/useSubscription/useSubscription";
 import Summary from "../../widgets/Summary/Summary";
+import State from "../State";
 
-class Statefull {
-  state = null;
-  subscribers = [];
-
-  constructor() {}
-
-  getSnapshot() {
-    return this.getState();
-  }
-
-  notify(handler) {
-    if (handler) {
-      handler(this.getState());
-      return;
-    }
-    this.subscribers.forEach((h) => {
-      h(this.getState());
-    });
-  }
-
-  getState() {
-    return this.state;
-  }
-
-  setState(state) {
-    if (typeof state === "function") {
-      this.state = state(this.getState());
-    } else {
-      this.state = state;
-    }
-    this.notify();
-  }
-
-  subscribe(handler) {
-    this.subscribers.push(handler);
-    this.notify(handler);
-  }
-
-  unsubscribe(handler) {
-    this.subscribers = this.subscribers.filter((h) => handler !== h);
-  }
-}
-class Widgets extends Statefull {
+class Widgets extends State {
   constructor() {
     super();
     this.state = [

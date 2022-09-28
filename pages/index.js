@@ -1,18 +1,19 @@
 import { InputLarge, Tile } from "../ui";
-import { Button, ConfirmButton, MenuButton } from "../ui/buttons";
+import { Button } from "../ui/buttons";
 import Flex from "../ui/Flex/Flex";
 import { Grid, Sidebar, Widget } from "../components";
 import { DndProvider, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useWidgets } from "../core/widget/widget";
-import { Dialog } from "../ui/Dialog";
-import React, { useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import styled, { css } from "styled-components";
 import { colors, shadows } from "../ui/theme/theme";
 import { md, sm } from "../ui/Grid/medias";
 import AnimatedDialog from "../ui/Dialog/Dialog";
 import { scrollbarNoneCss } from "../ui/css/scrollbar";
 import Select from "../ui/Select/Select";
+import { useDashboardController } from "../core/DashbordController/DashbordController";
+import dynamic from "next/dynamic";
 
 const Header = () => {
   return (
@@ -86,8 +87,93 @@ const WidgetHolder = ({ children }) => {
   );
 };
 
-const Dashboard = ({ children }) => {
-  return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+const resolveWidget = async (name) =>
+  dynamic(() => import(`../widgets/${name}/${name}`), {
+    ssr: false,
+    loading: () => <div>Loading Activity ...</div>,
+  });
+
+const DynamicWidget = ({ name, ...props }) => {
+  const ref = useRef(null);
+  const [, rerender] = useReducer(() => ({}), {});
+
+  useEffect(() => {
+    resolveWidget(name).then((c) => {
+      ref.current = c;
+      rerender();
+    });
+  }, [name]);
+
+  const Component = ref.current;
+
+  return Component ? <Component {...props} /> : null;
+};
+
+const Dashboard = () => {
+  const [controllerState] = useDashboardController();
+  const widgets = controllerState.current?.widgets || [];
+  return (
+    <DndProvider backend={HTML5Backend}>
+      <div>
+        <Flex justify={"space-between"} align={"center"}>
+          <div
+            style={{
+              paddingLeft: ".5rem",
+              paddingBottom: "1.5rem",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "1.7rem",
+                fontWeight: 600,
+              }}
+            >
+              Dashboard
+            </div>
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontWeight: 500,
+                color: "gray",
+              }}
+            >
+              Monday, 3 September 2022
+            </div>
+          </div>
+          <Flex align={"center"}>
+            {/*<ConfirmButton>Publish</ConfirmButton>*/}
+            {/*<AddWidgetButton onClick={open} />*/}
+            {/*<Dialog ref={dialogRef} onClick={close}>*/}
+            {/*  <TileMedia>*/}
+            {/*    <TileWhite>*/}
+            {/*      <TileWhite.Body>*/}
+            {/*        <WidgetsMenu />*/}
+            {/*      </TileWhite.Body>*/}
+            {/*    </TileWhite>*/}
+            {/*  </TileMedia>*/}
+            {/*</Dialog>*/}
+            {/*<MenuButton />*/}
+            <Select>
+              <option>Today</option>
+              <option>Yesterday</option>
+            </Select>
+          </Flex>
+        </Flex>
+        <Grid gutter={"1rem"}>
+          {widgets.map((widget) => {
+            return (
+              <Widget widget={widget} key={widget.name}>
+                <DynamicWidget
+                  name={widget.component.name}
+                  {...widget.component.props}
+                />
+              </Widget>
+            );
+          })}
+        </Grid>
+      </div>
+    </DndProvider>
+  );
 };
 
 const TileWhite = styled(Tile)`
@@ -202,61 +288,7 @@ export default function Home() {
       header={<Header />}
       main={
         <div>
-          <Flex justify={"space-between"} align={"center"}>
-            <div
-              style={{
-                paddingLeft: ".5rem",
-                paddingBottom: "1.5rem",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "1.7rem",
-                  fontWeight: 600,
-                }}
-              >
-                Dashboard
-              </div>
-              <div
-                style={{
-                  fontSize: "0.9rem",
-                  fontWeight: 500,
-                  color: "gray",
-                }}
-              >
-                Monday, 3 September 2022
-              </div>
-            </div>
-            <Flex align={"center"}>
-              {/*<ConfirmButton>Publish</ConfirmButton>*/}
-              {/*<AddWidgetButton onClick={open} />*/}
-              {/*<Dialog ref={dialogRef} onClick={close}>*/}
-              {/*  <TileMedia>*/}
-              {/*    <TileWhite>*/}
-              {/*      <TileWhite.Body>*/}
-              {/*        <WidgetsMenu />*/}
-              {/*      </TileWhite.Body>*/}
-              {/*    </TileWhite>*/}
-              {/*  </TileMedia>*/}
-              {/*</Dialog>*/}
-              {/*<MenuButton />*/}
-              <Select>
-                <option>Today</option>
-                <option>Yesterday</option>
-              </Select>
-            </Flex>
-          </Flex>
-          <Dashboard>
-            <Grid gutter={"1rem"}>
-              {widgets.map((widget) => {
-                return (
-                  <Widget widget={widget} key={widget.name}>
-                    <widget.Component />
-                  </Widget>
-                );
-              })}
-            </Grid>
-          </Dashboard>
+          <Dashboard />
         </div>
       }
     ></Layout>
